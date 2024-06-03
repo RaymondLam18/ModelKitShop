@@ -1,29 +1,44 @@
-import * as React from 'react';
+import React, { useContext } from 'react';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import HomeScreen from './screens/HomeScreen';
-import DetailsScreen from './screens/DetailsScreen';
-import SettingsScreen from './screens/SettingsScreen';
-import MapScreen from './screens/MapScreen';
-import PlacesListScreen from './screens/PlacesListScreen';
-import { ThemeProvider } from './contexts/ThemeContext';
+import HomeScreen from './app/screens/HomeScreen';
+import SettingsScreen from './app/screens/SettingsScreen';
+import MapScreen from './app/screens/MapScreen';
+import PlacesListScreen from './app/screens/PlacesListScreen';
+import DetailsScreen from './app/screens/DetailsScreen';
+import { ThemeProvider, ThemeContext } from './app/contexts/ThemeContext';
 
-// Creëer de stack navigator
 const Stack = createNativeStackNavigator();
 
 function App() {
     return (
         <ThemeProvider>
             <NavigationContainer>
-                <Stack.Navigator initialRouteName="Home">
-                    <Stack.Screen name="Home" component={HomeScreen} />
-                    <Stack.Screen name="Details" component={DetailsScreen} />
-                    <Stack.Screen name="Settings" component={SettingsScreen} />
-                    <Stack.Screen name="Map" component={MapScreen} />
-                    <Stack.Screen name="PlacesList" component={PlacesListScreen} />
-                </Stack.Navigator>
+                <AppNavigator />
             </NavigationContainer>
         </ThemeProvider>
+    );
+}
+
+function AppNavigator() {
+    const { isDarkMode } = useContext(ThemeContext);
+
+    return (
+        <Stack.Navigator
+            initialRouteName="Home"
+            screenOptions={{
+                headerStyle: {
+                    backgroundColor: isDarkMode ? 'black' : 'white', // Verandert de achtergrondkleur van de header op basis van dark mode
+                },
+                headerTintColor: isDarkMode ? 'white' : 'black', // Verandert de tekstkleur van de header op basis van dark mode
+            }}
+        >
+            <Stack.Screen name="Home" component={HomeScreen} />
+            <Stack.Screen name="Settings" component={SettingsScreen} />
+            <Stack.Screen name="Map" component={MapScreen} />
+            <Stack.Screen name="PlacesList" component={PlacesListScreen} />
+            <Stack.Screen name="Details" component={DetailsScreen} />
+        </Stack.Navigator>
     );
 }
 

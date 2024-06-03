@@ -44,7 +44,6 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            <Text style={[styles.text, isDarkMode && styles.darkText]}>Home Screen</Text>
             <Button
                 title="Save Data Locally"  // Knop om data lokaal op te slaan
                 onPress={saveData}

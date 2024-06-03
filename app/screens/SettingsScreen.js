@@ -8,7 +8,6 @@ function SettingsScreen() {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            <Text style={[styles.text, isDarkMode && styles.darkText]}>Settings Screen</Text>
             <Text style={[styles.text, isDarkMode && styles.darkText]}>Dark Mode</Text>
             <Switch
                 onValueChange={toggleTheme}  // Wisselen van het thema
