@@ -7,7 +7,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 // Scherm om de kaart weer te geven
 function MapScreen({ route, navigation }) {
     const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling
-    const { data, initialPlace } = route.params;  // Verkrijgen van de data van de plaatsen en de initiële plaats
+    const { data, initialPlace, itemId } = route.params;  // Verkrijgen van de data van de plaatsen, de initiële plaats en het itemId
     const [location, setLocation] = useState(null);  // Huidige locatie van de gebruiker
     const [region, setRegion] = useState(null);  // Kaart regio
 
@@ -90,6 +90,7 @@ function MapScreen({ route, navigation }) {
                             title={point.title}
                             description={point.description}
                             onPress={() => navigation.navigate('Details', {
+                                itemId: index,  // Zorg ervoor dat je het itemId doorgeeft
                                 title: point.title,
                                 description: point.description,
                                 latitude: point.latitude,

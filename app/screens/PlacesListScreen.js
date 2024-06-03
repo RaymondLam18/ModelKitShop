@@ -12,13 +12,14 @@ function PlacesListScreen({ route, navigation }) {
             <FlatList
                 data={data}  // Lijst met plaatsen
                 keyExtractor={(item, index) => index.toString()}  // Unieke sleutel voor elk item
-                renderItem={({ item }) => (
+                renderItem={({ item, index }) => (
                     // Elke plaats is een klikbare knop
                     <TouchableOpacity
                         style={styles.item}
                         onPress={() => navigation.navigate('Map', {
                             data,
                             initialPlace: item,  // Navigeren naar het kaartscherm met de geselecteerde plaats
+                            itemId: index,  // Voeg itemId hier toe
                         })}
                     >
                         <Text style={[styles.text, isDarkMode && styles.darkText]}>{item.title}</Text>
