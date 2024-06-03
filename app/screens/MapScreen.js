@@ -6,8 +6,8 @@ import { ThemeContext } from '../contexts/ThemeContext';
 
 // Scherm om de kaart weer te geven
 function MapScreen({ route, navigation }) {
-    const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling
-    const { data, initialPlace, itemId } = route.params;  // Verkrijgen van de data van de plaatsen, de initiële plaats en het itemId
+    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
+    const { data, initialPlace } = route.params;  // Verkrijgen van de data van de plaatsen en de initiële plaats
     const [location, setLocation] = useState(null);  // Huidige locatie van de gebruiker
     const [region, setRegion] = useState(null);  // Kaart regio
 
@@ -69,7 +69,6 @@ function MapScreen({ route, navigation }) {
                     onRegionChangeComplete={(region) => setRegion(region)}
                 >
                     {location && (
-                        // Marker voor de huidige locatie van de gebruiker
                         <Marker
                             coordinate={{
                                 latitude: location.latitude,
@@ -80,7 +79,6 @@ function MapScreen({ route, navigation }) {
                         />
                     )}
                     {data.map((point, index) => (
-                        // Markers voor alle plaatsen
                         <Marker
                             key={index}
                             coordinate={{
@@ -90,7 +88,7 @@ function MapScreen({ route, navigation }) {
                             title={point.title}
                             description={point.description}
                             onPress={() => navigation.navigate('Details', {
-                                itemId: index,  // Zorg ervoor dat je het itemId doorgeeft
+                                itemId: point.id,  // Zorg ervoor dat elk punt een uniek ID heeft
                                 title: point.title,
                                 description: point.description,
                                 latitude: point.latitude,
@@ -100,7 +98,7 @@ function MapScreen({ route, navigation }) {
                     ))}
                 </MapView>
             ) : (
-                <Text style={[styles.text, isDarkMode && styles.darkText]}>Loading...</Text>
+                <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Loading...</Text>
             )}
             <View style={styles.buttonContainer}>
                 <TouchableOpacity onPress={zoomIn} style={styles.button}>

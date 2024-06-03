@@ -4,7 +4,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 
 // Scherm om de startpagina weer te geven
 function HomeScreen({ navigation }) {
-    const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling
+    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
     const [data, setData] = useState([]);  // State om de data van de plaatsen op te slaan
 
     useEffect(() => {
@@ -17,16 +17,17 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+            <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Home Screen</Text>
             <Button
-                title="Go to Places List"  // Knop om naar de lijst met plaatsen te gaan
+                title="Go to Places List"
                 onPress={() => navigation.navigate('PlacesList', { data })}
             />
             <Button
-                title="Show Map"  // Knop om de kaart weer te geven
+                title="Show Map"
                 onPress={() => navigation.navigate('Map', { data })}
             />
             <Button
-                title="Go to Settings"  // Knop om naar de instellingen te gaan
+                title="Go to Settings"
                 onPress={() => navigation.navigate('Settings')}
             />
         </View>

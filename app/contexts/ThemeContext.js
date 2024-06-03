@@ -1,20 +1,22 @@
 import React, { createContext, useState, useEffect } from 'react';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-// Context voor thema-instellingen
 export const ThemeContext = createContext();
 
-// Provider component voor thema-instellingen
 export const ThemeProvider = ({ children }) => {
-    const [isDarkMode, setIsDarkMode] = useState(false);  // State om de donkere modus op te slaan
+    const [isDarkMode, setIsDarkMode] = useState(false);
+    const [fontSize, setFontSize] = useState(16);
 
     useEffect(() => {
-        // Thema-instellingen laden bij het opstarten van de app
         const loadSettings = async () => {
             try {
-                const value = await AsyncStorage.getItem('@dark_mode');
-                if (value !== null) {
-                    setIsDarkMode(JSON.parse(value));
+                const darkModeValue = await AsyncStorage.getItem('@dark_mode');
+                const fontSizeValue = await AsyncStorage.getItem('@font_size');
+                if (darkModeValue !== null) {
+                    setIsDarkMode(JSON.parse(darkModeValue));
+                }
+                if (fontSizeValue !== null) {
+                    setFontSize(parseInt(fontSizeValue));
                 }
             } catch (e) {
                 console.error(e);
@@ -25,7 +27,6 @@ export const ThemeProvider = ({ children }) => {
     }, []);
 
     const toggleTheme = async () => {
-        // Thema wisselen en opslaan
         setIsDarkMode(previousState => {
             const newValue = !previousState;
             AsyncStorage.setItem('@dark_mode', JSON.stringify(newValue));
@@ -33,8 +34,17 @@ export const ThemeProvider = ({ children }) => {
         });
     };
 
+    const saveFontSize = async (size) => {
+        try {
+            await AsyncStorage.setItem('@font_size', size.toString());
+            setFontSize(size);
+        } catch (e) {
+            console.error(e);
+        }
+    };
+
     return (
-        <ThemeContext.Provider value={{ isDarkMode, toggleTheme }}>
+        <ThemeContext.Provider value={{ isDarkMode, toggleTheme, fontSize, setFontSize: saveFontSize }}>
             {children}
         </ThemeContext.Provider>
     );

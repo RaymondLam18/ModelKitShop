@@ -4,7 +4,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 
 // Scherm om een lijst van plaatsen weer te geven
 function PlacesListScreen({ route, navigation }) {
-    const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling
+    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
     const { data } = route.params;  // Verkrijgen van de data van de plaatsen
 
     return (
@@ -12,17 +12,16 @@ function PlacesListScreen({ route, navigation }) {
             <FlatList
                 data={data}  // Lijst met plaatsen
                 keyExtractor={(item, index) => index.toString()}  // Unieke sleutel voor elk item
-                renderItem={({ item, index }) => (
+                renderItem={({ item }) => (
                     // Elke plaats is een klikbare knop
                     <TouchableOpacity
                         style={styles.item}
                         onPress={() => navigation.navigate('Map', {
                             data,
                             initialPlace: item,  // Navigeren naar het kaartscherm met de geselecteerde plaats
-                            itemId: index,  // Voeg itemId hier toe
                         })}
                     >
-                        <Text style={[styles.text, isDarkMode && styles.darkText]}>{item.title}</Text>
+                        <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>{item.title}</Text>
                     </TouchableOpacity>
                 )}
             />
