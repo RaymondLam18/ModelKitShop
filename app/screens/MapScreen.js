@@ -61,7 +61,7 @@ function MapScreen({ route, navigation }) {
     };
 
     return (
-        <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+        <View style={styles.container}>
             {region ? (
                 <MapView
                     style={styles.map}

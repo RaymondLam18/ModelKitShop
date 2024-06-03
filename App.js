@@ -28,9 +28,9 @@ function AppNavigator() {
             initialRouteName="Home"
             screenOptions={{
                 headerStyle: {
-                    backgroundColor: isDarkMode ? 'black' : 'white', // Verandert de achtergrondkleur van de header op basis van dark mode
+                    backgroundColor: isDarkMode ? 'black' : 'white',
                 },
-                headerTintColor: isDarkMode ? 'white' : 'black', // Verandert de tekstkleur van de header op basis van dark mode
+                headerTintColor: isDarkMode ? 'white' : 'black',
             }}
         >
             <Stack.Screen name="Home" component={HomeScreen} />
@@ -43,3 +43,4 @@ function AppNavigator() {
 }
 
 export default App;
+
