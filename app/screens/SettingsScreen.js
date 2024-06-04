@@ -33,7 +33,6 @@ function SettingsScreen() {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Settings Screen</Text>
             <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Dark Mode</Text>
             <Switch
                 onValueChange={toggleTheme}

@@ -17,7 +17,6 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Home Screen</Text>
             <Button
                 title="Go to Places List"
                 onPress={() => navigation.navigate('PlacesList', { data })}
