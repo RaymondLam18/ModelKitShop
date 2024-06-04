@@ -4,7 +4,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 
 // Scherm om een lijst van plaatsen weer te geven
 function PlacesListScreen({ route, navigation }) {
-    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
+    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling en lettergrootte
     const { data } = route.params;  // Verkrijgen van de data van de plaatsen
 
     return (
@@ -21,7 +21,9 @@ function PlacesListScreen({ route, navigation }) {
                             initialPlace: item,  // Navigeren naar het kaartscherm met de geselecteerde plaats
                         })}
                     >
-                        <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>{item.title}</Text>
+                        <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize: fontSize }]}>
+                            {item.title}
+                        </Text>
                     </TouchableOpacity>
                 )}
             />
