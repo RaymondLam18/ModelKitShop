@@ -59,7 +59,7 @@ export const ThemeProvider = ({ children }) => {
                 setFontSize: changeFontSize, // Functie om de lettergrootte te veranderen
             }}
         >
-            {children} {/* Kindcomponenten die toegang hebben tot de contextwaarden */}
+            {children}
         </ThemeContext.Provider>
     );
 };
