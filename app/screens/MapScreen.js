@@ -61,7 +61,7 @@ function MapScreen({ route, navigation }) {
     };
 
     return (
-        <View style={styles.container}>
+        <View style={[styles.container, isDarkMode && styles.darkContainer]}>
             {region ? (
                 <MapView
                     style={styles.map}
@@ -69,6 +69,7 @@ function MapScreen({ route, navigation }) {
                     onRegionChangeComplete={(region) => setRegion(region)}
                 >
                     {location && (
+                        // Marker voor de huidige locatie van de gebruiker
                         <Marker
                             coordinate={{
                                 latitude: location.latitude,
@@ -79,6 +80,7 @@ function MapScreen({ route, navigation }) {
                         />
                     )}
                     {data.map((point, index) => (
+                        // Markers voor alle plaatsen
                         <Marker
                             key={index}
                             coordinate={{
@@ -88,7 +90,6 @@ function MapScreen({ route, navigation }) {
                             title={point.title}
                             description={point.description}
                             onPress={() => navigation.navigate('Details', {
-                                itemId: point.id,  // Zorg ervoor dat elk punt een uniek ID heeft
                                 title: point.title,
                                 description: point.description,
                                 latitude: point.latitude,
