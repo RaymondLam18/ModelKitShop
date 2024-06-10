@@ -4,7 +4,7 @@ import { ThemeContext } from '../contexts/ThemeContext';
 
 // Scherm om de startpagina weer te geven
 function HomeScreen({ navigation }) {
-    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
+    const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
     const [data, setData] = useState([]);  // State om de data van de plaatsen op te slaan
 
     useEffect(() => {
