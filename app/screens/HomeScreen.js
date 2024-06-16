@@ -1,14 +1,14 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { Button, View, Text, StyleSheet } from 'react-native';
+import { View, StyleSheet } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
+import CustomButton from '../components/CustomButton';
 
 // Scherm om de startpagina weer te geven
 function HomeScreen({ navigation }) {
-    const { isDarkMode } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
-    const [data, setData] = useState([]);  // State om de data van de plaatsen op te slaan
+    const { isDarkMode } = useContext(ThemeContext);
+    const [data, setData] = useState([]);
 
     useEffect(() => {
-        // Data ophalen van de webservice
         fetch('https://stud.hosted.hr.nl/1024322/data.json')
             .then((response) => response.json())
             .then((json) => setData(json))
@@ -17,15 +17,15 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            <Button
+            <CustomButton
                 title="Go to Places List"
                 onPress={() => navigation.navigate('PlacesList', { data })}
             />
-            <Button
+            <CustomButton
                 title="Show Map"
                 onPress={() => navigation.navigate('Map', { data })}
             />
-            <Button
+            <CustomButton
                 title="Go to Settings"
                 onPress={() => navigation.navigate('Settings')}
             />
@@ -42,12 +42,6 @@ const styles = StyleSheet.create({
     },
     darkContainer: {
         backgroundColor: 'black',
-    },
-    text: {
-        color: 'black',
-    },
-    darkText: {
-        color: 'white',
     },
 });
 

@@ -1,30 +1,28 @@
 import React, { useContext } from 'react';
-import { View, Text, FlatList, TouchableOpacity, StyleSheet } from 'react-native';
+import { View, FlatList, StyleSheet } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
+import PlaceItem from '../components/PlaceItem';
 
 // Scherm om een lijst van plaatsen weer te geven
 function PlacesListScreen({ route, navigation }) {
-    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus instelling en lettergrootte
-    const { data } = route.params;  // Verkrijgen van de data van de plaatsen
+    const { isDarkMode, fontSize } = useContext(ThemeContext);
+    const { data } = route.params;
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
             <FlatList
-                data={data}  // Lijst met plaatsen
-                keyExtractor={(item, index) => index.toString()}  // Unieke sleutel voor elk item
+                data={data}
+                keyExtractor={(item, index) => index.toString()}
                 renderItem={({ item }) => (
-                    // Elke plaats is een klikbare knop
-                    <TouchableOpacity
-                        style={styles.item}
+                    <PlaceItem
+                        place={item}
                         onPress={() => navigation.navigate('Map', {
                             data,
-                            initialPlace: item,  // Navigeren naar het kaartscherm met de geselecteerde plaats
+                            initialPlace: item,
                         })}
-                    >
-                        <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize: fontSize }]}>
-                            {item.title}
-                        </Text>
-                    </TouchableOpacity>
+                        isDarkMode={isDarkMode}
+                        fontSize={fontSize}
+                    />
                 )}
             />
         </View>
@@ -38,17 +36,6 @@ const styles = StyleSheet.create({
     },
     darkContainer: {
         backgroundColor: 'black',
-    },
-    item: {
-        padding: 15,
-        borderBottomWidth: 1,
-        borderBottomColor: '#ccc',
-    },
-    text: {
-        color: 'black',
-    },
-    darkText: {
-        color: 'white',
     },
 });
 

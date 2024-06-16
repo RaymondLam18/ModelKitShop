@@ -1,29 +1,27 @@
 import React, { useContext, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
-import MapView, { Marker } from 'react-native-maps';
+import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 import * as Location from 'expo-location';
 import { ThemeContext } from '../contexts/ThemeContext';
+import MapComponent from '../components/MapComponent';
 
-// Scherm om de kaart weer te geven
 function MapScreen({ route, navigation }) {
-    const { isDarkMode, fontSize } = useContext(ThemeContext);  // Verkrijgen van de donkere modus en lettergrootte instellingen
-    const { data, initialPlace } = route.params;  // Verkrijgen van de data van de plaatsen en de initiële plaats
-    const [location, setLocation] = useState(null);  // Huidige locatie van de gebruiker
-    const [region, setRegion] = useState(null);  // Kaart regio
+    const { isDarkMode, fontSize } = useContext(ThemeContext);
+    const { data, initialPlace } = route.params;
+    const [location, setLocation] = useState(null);
+    const [region, setRegion] = useState(null);
 
     useEffect(() => {
         (async () => {
-            let { status } = await Location.requestForegroundPermissionsAsync();  // Verzoek om locatie permissies
+            let { status } = await Location.requestForegroundPermissionsAsync();
             if (status !== 'granted') {
-                console.log('Permission to access location was denied');
+                console.error('Permission to access location was denied');
                 return;
             }
 
-            let location = await Location.getCurrentPositionAsync({});  // Huidige locatie verkrijgen
+            let location = await Location.getCurrentPositionAsync({});
             setLocation(location.coords);
 
             if (initialPlace) {
-                // Instellen van de regio op basis van de geselecteerde plaats
                 setRegion({
                     latitude: initialPlace.latitude,
                     longitude: initialPlace.longitude,
@@ -31,7 +29,6 @@ function MapScreen({ route, navigation }) {
                     longitudeDelta: 0.01,
                 });
             } else {
-                // Instellen van de regio op basis van de huidige locatie
                 setRegion({
                     latitude: location.coords.latitude,
                     longitude: location.coords.longitude,
@@ -42,73 +39,22 @@ function MapScreen({ route, navigation }) {
         })();
     }, [initialPlace]);
 
-    const zoomIn = () => {
-        // Inzoomen op de kaart
-        setRegion((prevRegion) => ({
-            ...prevRegion,
-            latitudeDelta: prevRegion.latitudeDelta / 2,
-            longitudeDelta: prevRegion.longitudeDelta / 2,
-        }));
-    };
-
-    const zoomOut = () => {
-        // Uitzoomen op de kaart
-        setRegion((prevRegion) => ({
-            ...prevRegion,
-            latitudeDelta: prevRegion.latitudeDelta * 2,
-            longitudeDelta: prevRegion.longitudeDelta * 2,
-        }));
-    };
-
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
-            {region ? (
-                <MapView
-                    style={styles.map}
-                    region={region}
-                    onRegionChangeComplete={(region) => setRegion(region)}
-                >
-                    {location && (
-                        // Marker voor de huidige locatie van de gebruiker
-                        <Marker
-                            coordinate={{
-                                latitude: location.latitude,
-                                longitude: location.longitude,
-                            }}
-                            title="You are here"
-                            pinColor="blue"
-                        />
-                    )}
-                    {data.map((point, index) => (
-                        // Markers voor alle plaatsen
-                        <Marker
-                            key={index}
-                            coordinate={{
-                                latitude: point.latitude,
-                                longitude: point.longitude,
-                            }}
-                            title={point.title}
-                            description={point.description}
-                            onPress={() => navigation.navigate('Details', {
-                                title: point.title,
-                                description: point.description,
-                                latitude: point.latitude,
-                                longitude: point.longitude,
-                            })}
-                        />
-                    ))}
-                </MapView>
-            ) : (
-                <Text style={[styles.text, isDarkMode && styles.darkText, { fontSize }]}>Loading...</Text>
-            )}
-            <View style={styles.buttonContainer}>
-                <TouchableOpacity onPress={zoomIn} style={styles.button}>
-                    <Text style={styles.buttonText}>+</Text>
-                </TouchableOpacity>
-                <TouchableOpacity onPress={zoomOut} style={styles.button}>
-                    <Text style={styles.buttonText}>-</Text>
-                </TouchableOpacity>
-            </View>
+            <MapComponent
+                region={region}
+                location={location}
+                places={data}
+                onPressMarker={(place) => navigation.navigate('Details', { place })}
+                isDarkMode={isDarkMode}
+                fontSize={fontSize}
+            />
+            {/*<TouchableOpacity*/}
+            {/*    style={styles.button}*/}
+            {/*    onPress={() => navigation.goBack()}*/}
+            {/*>*/}
+            {/*    <Text style={styles.buttonText}>Go Back</Text>*/}
+            {/*</TouchableOpacity>*/}
         </View>
     );
 }
@@ -120,33 +66,17 @@ const styles = StyleSheet.create({
     darkContainer: {
         backgroundColor: 'black',
     },
-    map: {
-        flex: 1,
-    },
-    text: {
-        color: 'black',
-    },
-    darkText: {
-        color: 'white',
-    },
-    buttonContainer: {
-        position: 'absolute',
-        bottom: 20,
-        right: 20,
-        flexDirection: 'column',
-    },
     button: {
-        width: 40,
-        height: 40,
-        backgroundColor: 'rgba(0,0,0,0.5)',
-        alignItems: 'center',
-        justifyContent: 'center',
-        marginVertical: 5,
-        borderRadius: 20,
+        position: 'absolute',
+        bottom: 10,
+        left: 10,
+        backgroundColor: '#841584',
+        padding: 10,
+        borderRadius: 5,
     },
     buttonText: {
         color: 'white',
-        fontSize: 20,
+        fontSize: 16,
     },
 });
 
