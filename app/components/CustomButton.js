@@ -8,7 +8,7 @@ const CustomButton = ({ title, onPress }) => {
             <Button
                 title={title}
                 onPress={onPress}
-                color="#841584"
+                color="blue"
                 accessibilityLabel={title}
             />
         </View>
