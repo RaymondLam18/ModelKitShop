@@ -6,10 +6,13 @@ import { AirbnbRating } from 'react-native-ratings';
 import CustomButton from '../components/CustomButton';
 
 function DetailsScreen({ route, navigation }) {
+    // Haalt thema-instellingen op uit ThemeContext
     const { isDarkMode, fontSize } = useContext(ThemeContext);
+    // Haalt plaatsgegevens op uit de navigatieroute parameters
     const { place } = route.params;
     const { title, latitude, longitude, description } = place;
 
+    // Houdt de huidige beoordeling en recensies bij
     const [rating, setRating] = useState(0);
     const [review, setReview] = useState('');
     const [reviews, setReviews] = useState([]);
@@ -18,6 +21,7 @@ function DetailsScreen({ route, navigation }) {
         loadRatingAndReviews();
     }, []);
 
+    // Laadt opgeslagen beoordeling en recensies uit AsyncStorage
     const loadRatingAndReviews = async () => {
         try {
             const storedRating = await AsyncStorage.getItem(`@rating_${title}`);
@@ -34,6 +38,7 @@ function DetailsScreen({ route, navigation }) {
         }
     };
 
+    // Slaat de nieuwe beoordeling op in AsyncStorage
     const saveRating = async (newRating) => {
         try {
             await AsyncStorage.setItem(`@rating_${title}`, newRating.toString());
@@ -43,20 +48,22 @@ function DetailsScreen({ route, navigation }) {
         }
     };
 
+    // Voegt een nieuwe recensie toe en slaat deze op in AsyncStorage
     const saveReview = async () => {
         if (review.trim()) {
             try {
                 const updatedReviews = [...reviews, review];
                 await AsyncStorage.setItem(`@reviews_${title}`, JSON.stringify(updatedReviews));
                 setReviews(updatedReviews);
-                setReview('');
-                Keyboard.dismiss();
+                setReview('');  // Reset het invoerveld voor de recensie
+                Keyboard.dismiss();  // Verbergt het toetsenbord
             } catch (e) {
                 console.error(e);
             }
         }
     };
 
+    // Render functie voor het weergeven van elke recensie
     const renderItem = ({ item }) => (
         <Text style={[styles.reviewText, isDarkMode && styles.darkText, { fontSize }]}>
             {item}

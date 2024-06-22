@@ -3,11 +3,13 @@ import { Text, TouchableOpacity, StyleSheet } from 'react-native';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const PlaceItem = ({ place, onPress, isDarkMode, fontSize }) => {
+    // Houdt de huidige beoordeling bij
     const [rating, setRating] = useState(null);
 
     useEffect(() => {
         const loadRating = async () => {
             try {
+                // Laadt de beoordeling uit AsyncStorage
                 const storedRating = await AsyncStorage.getItem(`@rating_${place.title}`);
                 if (storedRating !== null) {
                     setRating(parseInt(storedRating));
