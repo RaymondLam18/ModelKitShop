@@ -1,5 +1,5 @@
 import React, { useContext, useEffect, useState } from 'react';
-import { View, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { ThemeContext } from '../contexts/ThemeContext';
 import CustomButton from '../components/CustomButton';
 
@@ -18,6 +18,7 @@ function HomeScreen({ navigation }) {
 
     return (
         <View style={[styles.container, isDarkMode && styles.darkContainer]}>
+            <Text style={[styles.appName, isDarkMode && styles.darkAppName]}>ModelKitShop Locator</Text>
             <CustomButton
                 title="Go to Places List"
                 onPress={() => navigation.navigate('PlacesList', { data })} // Navigeren naar de plaatsenlijst
@@ -43,6 +44,15 @@ const styles = StyleSheet.create({
     },
     darkContainer: {
         backgroundColor: 'black', // Achtergrondkleur voor donkere modus
+    },
+    appName: {
+        fontSize: 24, // Vaste lettergrootte voor de app naam
+        fontWeight: 'bold',
+        marginBottom: 20, // Ruimte tussen de app naam en de knoppen
+        color: 'black', // Kleur voor de tekst in lichte modus
+    },
+    darkAppName: {
+        color: 'white', // Kleur voor de tekst in donkere modus
     },
 });
 
